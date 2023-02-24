@@ -12,5 +12,5 @@ class PathDecoder(Decoder):
 
     def decode(self):
         for el in self._path.rglob("*"):
-            if el.suffix == ".jpg" or el.suffix == ".png":
+            if el.suffix.lower() == ".jpg" or el.suffix.lower() == ".png":
                 yield el
