@@ -313,7 +313,7 @@ def get_rotate_crop_image(img, points):
 postprocess_params = {
     'name': 'CTCLabelDecode',
     "character_type": "ch",
-    "character_dict_path": r"C:\Users\HENNESSY\Desktop\word_dct.txt",
+    "character_dict_path": r"/home/hennessy/Desktop/NumberPlateRecognition/NumberPlateRecognition/assets/models/recognizer/PaddleOCR/word_dict.txt",
     "use_space_char": True
 }
 

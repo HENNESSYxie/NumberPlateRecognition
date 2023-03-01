@@ -10,3 +10,10 @@ class Detection:
         self.y2 = y2
         self.score = score
 
+
+@dataclass
+class Number:
+    def __init__(self, number: str, score: float):
+        self.number = number
+        self.score = score
+
