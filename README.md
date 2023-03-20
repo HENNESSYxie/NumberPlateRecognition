@@ -3,6 +3,7 @@
 Number Plate Recognizing module by Khatamov Azizjon, using YOLOv5 and PaddleOCR.
 
 ### Installation
+Install dependencies:
 ```commandline
 pip install -r requirements.txt
 ```
