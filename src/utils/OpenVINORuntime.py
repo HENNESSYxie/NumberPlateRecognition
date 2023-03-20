@@ -7,8 +7,8 @@ from pathlib import Path
 
 class OpenVINORuntime(ABC):
     def __init__(self,
-                 model: Path,
-                 weights: Path,
+                 model: str,
+                 weights: str,
                  output_layer_name: str,
                  score_threshold: float,
                  nms_threshold: float,
