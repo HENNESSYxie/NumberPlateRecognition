@@ -32,19 +32,19 @@ recognizer = PaddleOCR(model=base_path + "/assets/models/recognizer/PaddleOCR/pa
                        nms_threshold=0.77,
                        width=320,
                        height=48)
-video = "/home/hennessy/Downloads/Telegram Desktop/PXL_20220625_141104638.mp4"
+video = "/windows/car_number_plates/videos/second.mp4"
 decoder = VideoDecoder(video)
-tracker = SORTTracker(min_hits=3, max_age=3)
+tracker = SORTTracker(min_hits=3, max_age=5)
 
 for frame in decoder.decode():
     detections = detector.predict(frame)
     tracks = tracker.update(detections)
-    for det in detections:
-        cropped = frame[det.y1:det.y2, det.x1:det.x2]
+    for det in tracks:
+        cropped = frame[det.detection.y1:det.detection.y2, det.detection.x1:det.detection.x2]
         warped = aligner.predict(cropped)
         warped = cv2.blur(warped, (1, 2))
         number = recognizer.predict(warped)
-        frame = visualizer.visualize(image=frame, detection=det, number=number)
+        frame = visualizer.visualize(image=frame, track=det, number=number)
     cv2.imshow('Video', frame)
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break

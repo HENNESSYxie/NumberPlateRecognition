@@ -17,3 +17,11 @@ class Number:
         self.number = number
         self.score = score
 
+
+@dataclass
+class Track:
+    def __init__(self, detection: Detection, track_id: int, is_recognized: bool = False):
+        self.detection = detection
+        self.track_id = track_id
+        self.is_recognized = is_recognized
+

@@ -1,6 +1,6 @@
 import numpy as np
 from tracker.sort import Sort
-from utils.datamodels import Detection
+from utils.datamodels import Detection, Track
 
 
 class SORTTracker:
@@ -16,7 +16,13 @@ class SORTTracker:
             dets.append(np.asarray([detection.x1, detection.y1,
                                     detection.x2, detection.y2, detection.score]))
         tracks = self._tracker.update(np.asarray(dets))
-        return tracks
+        result = []
+        for i, tr in enumerate(tracks):
+            tr = tr.astype(int)
+            # result.append(Track(detection=detections[i], track_id=int(tr[4])))
+            result.append(Track(detection=Detection(x1=tr[0], y1=tr[1], x2=tr[2], y2=tr[3], score=detections[i]),
+                                track_id=tr[4]))
+        return result
 
     def reset_ids(self):
         for t in self._tracker.trackers:
