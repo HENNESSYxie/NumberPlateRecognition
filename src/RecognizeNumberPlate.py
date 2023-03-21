@@ -6,7 +6,9 @@ from aligner.EfficientNetV2sAligner import EfficientNetV2sAligner
 from recognizer.PaddleOCR import PaddleOCR
 from visualizer.Visualizer import Visualizer
 from decoder.VideoDecoder import VideoDecoder
+from tracker.SORTTracker import SORTTracker
 
+os.environ['BASE_PATH'] = "/home/hennessy/Desktop/train_files/NumberPlateRecognition"
 base_path = os.environ['BASE_PATH']
 visualizer = Visualizer()
 detector = YOLOv5PlateDetector(model=base_path + "/assets/models/detector/YOLOv5OpenVINO/yolov5.xml",
@@ -30,11 +32,13 @@ recognizer = PaddleOCR(model=base_path + "/assets/models/recognizer/PaddleOCR/pa
                        nms_threshold=0.77,
                        width=320,
                        height=48)
-video = "/windows/car_number_plates/videos/second.mp4"
+video = "/home/hennessy/Downloads/Telegram Desktop/PXL_20220625_141104638.mp4"
 decoder = VideoDecoder(video)
+tracker = SORTTracker(min_hits=3, max_age=3)
 
 for frame in decoder.decode():
     detections = detector.predict(frame)
+    tracks = tracker.update(detections)
     for det in detections:
         cropped = frame[det.y1:det.y2, det.x1:det.x2]
         warped = aligner.predict(cropped)
