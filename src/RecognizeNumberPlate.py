@@ -7,6 +7,7 @@ from recognizer.PaddleOCR import PaddleOCR
 from visualizer.Visualizer import Visualizer
 from decoder.VideoDecoder import VideoDecoder
 from tracker.SORTTracker import SORTTracker
+from passHeuristic.PassHeuristic import PassHeuristicWithLine
 
 os.environ['BASE_PATH'] = "/home/hennessy/Desktop/train_files/NumberPlateRecognition"
 base_path = os.environ['BASE_PATH']
@@ -32,19 +33,26 @@ recognizer = PaddleOCR(model=base_path + "/assets/models/recognizer/PaddleOCR/pa
                        nms_threshold=0.77,
                        width=320,
                        height=48)
-video = "/windows/car_number_plates/videos/second.mp4"
+video = "/windows/car_number_plates/videos/first.mp4"
 decoder = VideoDecoder(video)
 tracker = SORTTracker(min_hits=3, max_age=5)
+line = 0.6
+passHeurisitc = PassHeuristicWithLine(line=line)
 
 for frame in decoder.decode():
+    h, w = frame.shape[:2]
     detections = detector.predict(frame)
     tracks = tracker.update(detections)
     for det in tracks:
         cropped = frame[det.detection.y1:det.detection.y2, det.detection.x1:det.detection.x2]
-        warped = aligner.predict(cropped)
-        warped = cv2.blur(warped, (1, 2))
-        number = recognizer.predict(warped)
-        frame = visualizer.visualize(image=frame, track=det, number=number)
+        if passHeurisitc.run(frame, track=det):
+            warped = aligner.predict(cropped)
+            warped = cv2.blur(warped, (1, 2))
+            number = recognizer.predict(warped)
+            if number is not None:
+                passHeurisitc.recognized_tracks[det.track_id] = number
+        frame = visualizer.visualize(image=frame, track=det, recognized_tracks=passHeurisitc.recognized_tracks)
+    frame = cv2.line(frame, (int(line * w), 0), (int(line * w), h), (255, 255, 255), 2)
     cv2.imshow('Video', frame)
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
