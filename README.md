@@ -14,3 +14,5 @@ Run RecognizerNumberplate.py script:
 ```commandline
 BASE_PATH=<path_to_project> python src/RecognizeNumberPlate.py 
 ```
+
+![](https://github.com/HENNESSYxie/NumberPlateRecognition/tree/main/content/demo.gif)
