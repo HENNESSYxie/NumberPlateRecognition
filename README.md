@@ -12,7 +12,7 @@ pip install -r requirements.txt
 In src.RecognizeNumberPlate.py change 'video' variable and set there path to your video(str).
 Run RecognizerNumberplate.py script:
 ```commandline
-BASE_PATH=<path_to_project> python src/RecognizeNumberPlate.py 
+python src/RecognizeNumberPlate.py 
 ```
 
 ![](https://github.com/HENNESSYxie/NumberPlateRecognition/blob/main/content/demo.gif)
