@@ -1,5 +1,6 @@
 import cv2
 import os
+from pathlib import Path
 
 from detector.YOLOv5PlateDetector import YOLOv5PlateDetector
 from aligner.EfficientNetV2sAligner import EfficientNetV2sAligner
@@ -9,8 +10,7 @@ from decoder.VideoDecoder import VideoDecoder
 from tracker.SORTTracker import SORTTracker
 from passHeuristic.PassHeuristic import PassHeuristicWithLine
 
-os.environ['BASE_PATH'] = "/home/hennessy/Desktop/train_files/NumberPlateRecognition"
-base_path = os.environ['BASE_PATH']
+base_path = Path(__file__).resolve().parent.parent
 visualizer = Visualizer()
 detector = YOLOv5PlateDetector(model=base_path + "/assets/models/detector/YOLOv5OpenVINO/yolov5.xml",
                                weights=base_path + "/assets/models/detector/YOLOv5OpenVINO/yolov5.bin",
